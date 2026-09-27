@@ -7,7 +7,10 @@ let books = require("./booksdb.js");
 let users = require("./auth_users.js").users;
 
 
-// Register
+// =========================
+// GENERAL USER ROUTES
+// =========================
+
 public_users.post("/register", (req, res) => {
     const username = req.query.username;
     const password = req.query.password;
@@ -31,21 +34,18 @@ public_users.post("/register", (req, res) => {
         password: password
     });
 
-    res.status(200).json({
+    return res.status(200).json({
         message: "User successfully registred. Now you can login"
     });
 });
 
 
-// Get all books
 public_users.get('/', function (req, res) {
-    res.json(books);
+    res.json({ books });
 });
 
 
-// Get book by ISBN
 public_users.get('/isbn/:isbn', function (req, res) {
-
     const isbn = req.params.isbn;
 
     const book = Object.values(books).find(
@@ -62,9 +62,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
 });
 
 
-// Get book by author
 public_users.get('/author/:author', function (req, res) {
-
     const author = req.params.author;
 
     const book = Object.values(books).find(
@@ -81,9 +79,7 @@ public_users.get('/author/:author', function (req, res) {
 });
 
 
-// Get book by title
 public_users.get('/title/:title', function (req, res) {
-
     const title = req.params.title;
 
     const book = Object.values(books).find(
@@ -100,9 +96,7 @@ public_users.get('/title/:title', function (req, res) {
 });
 
 
-// Get review
 public_users.get('/review/:isbn', function (req, res) {
-
     const isbn = req.params.isbn;
 
     const book = Object.values(books).find(
@@ -119,45 +113,72 @@ public_users.get('/review/:isbn', function (req, res) {
 });
 
 
-// =====================================================
-// Q11 - AXIOS + ASYNC/AWAIT
-// =====================================================
+// ======================================================
+// TASK 10 - GET ALL BOOKS USING AXIOS + ASYNC/AWAIT
+// ======================================================
 
 async function getAllBooks() {
-    const response = await axios.get('http://localhost:5000/');
-    return response.data;
+    try {
+        const response = await axios.get("http://localhost:5000/");
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
+
+// ======================================================
+// TASK 11 - GET BOOK BY ISBN USING AXIOS + ASYNC/AWAIT
+// ======================================================
 
 async function getBooksByISBN(isbn) {
-    const response = await axios.get(
-        `http://localhost:5000/isbn/${encodeURIComponent(isbn)}`
-    );
-    return response.data;
+    try {
+        const response = await axios.get(
+            `http://localhost:5000/isbn/${encodeURIComponent(isbn)}`
+        );
+
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
+
+// ======================================================
+// TASK 12 - GET BOOK BY AUTHOR USING AXIOS + ASYNC/AWAIT
+// ======================================================
 
 async function getBooksByAuthor(author) {
-    const response = await axios.get(
-        `http://localhost:5000/author/${encodeURIComponent(author)}`
-    );
-    return response.data;
+    try {
+        const response = await axios.get(
+            `http://localhost:5000/author/${encodeURIComponent(author)}`
+        );
+
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
+
+// ======================================================
+// TASK 13 - GET BOOK BY TITLE USING AXIOS + ASYNC/AWAIT
+// ======================================================
 
 async function getBooksByTitle(title) {
-    const response = await axios.get(
-        `http://localhost:5000/title/${encodeURIComponent(title)}`
-    );
-    return response.data;
-}
+    try {
+        const response = await axios.get(
+            `http://localhost:5000/title/${encodeURIComponent(title)}`
+        );
 
-
-async function getBookReview(isbn) {
-    const response = await axios.get(
-        `http://localhost:5000/review/${encodeURIComponent(isbn)}`
-    );
-    return response.data;
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
 
@@ -166,6 +187,5 @@ module.exports.getAllBooks = getAllBooks;
 module.exports.getBooksByISBN = getBooksByISBN;
 module.exports.getBooksByAuthor = getBooksByAuthor;
 module.exports.getBooksByTitle = getBooksByTitle;
-module.exports.getBookReview = getBookReview;
 
 module.exports.general = public_users;
